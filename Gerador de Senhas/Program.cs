@@ -1,18 +1,23 @@
 ﻿using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 namespace geradorsenhas
 {
     class Program
     {
         private static Dictionary<String, String> armazenadorSenhasRedes = new Dictionary<String, String>(); // armazenar as senhas
+
+        private static String arquivoSaida = @"C:\Users\Rafae\OneDrive\Área de Trabalho\C#\Gerador de Senha\Senhas.txt";
         public static void Gerador()
         {
             Guid guid = Guid.NewGuid(); // gera um valor aleatório
             String senhaForte = guid.ToString().Substring(0, 8); // limita string para 8 caracteres
 
-            Armazenador(senhaForte);
+            LinkRedes(senhaForte);
         }
 
-        public static void Armazenador(String senhaForte)
+        public static void LinkRedes(String senhaForte)
         {
             Console.Write("Digite o site da senha: ");
             String redeSocial = Console.ReadLine();
@@ -86,6 +91,19 @@ namespace geradorsenhas
             }
 
 
+        }
+
+        public static void ArmazenarDados()
+        {
+            try
+            {
+                var linhas = armazenadorSenhasRedes.Select(par => $"{par.Key};{par.Value}");
+                File.WriteAllLines(arquivoSaida, linhas);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
         public static void Main(String[] args)
         {
